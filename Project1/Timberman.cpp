@@ -6,3 +6,6 @@ void Timberman::ChangePosition(positionEnum temp) {
 Timberman::Timberman() {
 	playerPosition = right;
 }
+Branch::Branch() {
+	branchPosition = Timberman::positionEnum::left;
+}

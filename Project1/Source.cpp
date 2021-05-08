@@ -1,5 +1,6 @@
 #include "Classes.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 int PositionToPixels(int x) {
 	switch (x)
 	{
@@ -11,6 +12,8 @@ int PositionToPixels(int x) {
 }
 int main()
 {
+	Branch test; 
+	std::cout << test.branchPosition;
 	Timberman Player;
 	sf::RectangleShape rectangle(sf::Vector2f(50, 50));
 	rectangle.setFillColor(sf::Color::White);

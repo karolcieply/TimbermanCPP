@@ -1,4 +1,5 @@
-#pragma once
+#pragma once 
+class Branch;
 class Timberman
 {
 public:
@@ -7,5 +8,10 @@ public:
 	void ChangePosition(enum positionEnum);
 	positionEnum playerPosition;
 private:
+};
+class Branch{
+public:
+	Timberman::positionEnum branchPosition;
+	Branch();
 };
 
