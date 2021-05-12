@@ -1,44 +1,80 @@
-#include "Classes.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
-int PositionToPixels(int x) {
-	switch (x)
-	{
-	case 0:
-		return 195;
-	case 1:
-		return 295;
-	}
+#include <ctime>
+#include <fstream>
+#include <stdlib.h>
+#include <queue>
+#include "Classes.h"
+bool checkColission(Player p, Tree t) {
+	if (p.isRight && t.branchPosition == 2)return true;	
+	else if (!p.isRight && t.branchPosition == 0)return true;	
 }
 int main()
 {
-	Branch test; 
-	std::cout << test.branchPosition;
-	Timberman Player;
-	sf::RectangleShape rectangle(sf::Vector2f(50, 50));
-	rectangle.setFillColor(sf::Color::White);
-	sf::RenderWindow window(sf::VideoMode(540,960), "Nauka");
-	window.setVerticalSyncEnabled(true);
-	window.setFramerateLimit(60);
+
+	static unsigned short int windowWidth{ 540 }, windowHeight{ 960 }, frameLimit{ 60 };
+	//deklaracja kluczowych zmiennych
+	enum STATES {
+		MENU, GAME
+	};
+	char GAME_STATE = STATES::MENU;
+
+	//tworzenie okna 
+	sf::RenderWindow window{ sf::VideoMode(windowWidth,windowHeight),"\"Timberman\"" };
+	window.setFramerateLimit(frameLimit);
+	Menu menu(sf::Vector2f(windowWidth,windowHeight));
+	Player playerObj;
+	//Tree * TreeArray=new Tree[7];
+	Tree TreeArray[6];
+	for (int i = 0; i < 6; i++) {
+		TreeArray[i] = Tree(1);
+		TreeArray[i].MoveDown(5 - i);
+	}
+	
 	while (window.isOpen()) {
 		sf::Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
-				window.close();
-			}
+		window.pollEvent(event);
+		if (event.type == sf::Event::Closed) {
+			window.close();
 		}
-		window.clear(sf::Color::Black);
-		window.draw(rectangle);
-		window.display();
-		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Left) {
-				Player.ChangePosition(Timberman::positionEnum::left);
+		switch (GAME_STATE) {
+		case MENU:
+			menu.Draw(window);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				switch (menu.OnClick(sf::Mouse::getPosition(window))) {
+				case 1:
+					GAME_STATE = STATES::GAME;
+					break;
+				case 2:
+					window.close();
+					break;
+				}
 			}
-			if (event.key.code == sf::Keyboard::Right) {
-				Player.ChangePosition(Timberman::positionEnum::right);
+		break;
+		case GAME:
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
+				playerObj.setRight(true);
+				window.clear();
+				playerObj.Draw(window);
+				for (int i = 0; i < 6; i++) {
+					TreeArray[i].Draw(window);
+				}
+				window.display();
 			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
+				playerObj.setRight(false);
+				window.clear();
+				playerObj.Draw(window);
+				for (int i = 0; i < 6; i++) {
+					TreeArray[i].Draw(window);
+				}
+				window.display();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+				GAME_STATE = STATES::MENU;
+			}
+		break;
 		}
-		rectangle.setPosition(PositionToPixels(Player.playerPosition),910);
-		}
+	}
 	return 0;
 }
