@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -155,6 +156,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\playerleft.png" />
+    <Image Include="resources\playerright.png" />
+    <Image Include="resources\tree.png" />
+    <Image Include="resources\treeleft.png" />
+    <Image Include="resources\treeright.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\font.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,17 +1,18 @@
 #include "Classes.h"
-Menu::Menu(sf::Vector2f size):Object(size){
+Menu::Menu(sf::Vector2f size):Object(size,sf::Vector2f(0,0)){
 
-}
-void Menu::Draw(sf::RenderWindow& window)
-{
-	start = sf::RectangleShape(sf::Vector2f(size.x / 2.f, size.y / 10.f));
-	exit = sf::RectangleShape(sf::Vector2f(size.x / 2.f, size.y / 10.f));
+	start = sf::RectangleShape(sf::Vector2f(GetSize().x / 2.f, GetSize().y / 10.f));
+	exit = sf::RectangleShape(sf::Vector2f(GetSize().x / 2.f, GetSize().y / 10.f));
 
 	start.setFillColor(sf::Color::Blue);
 	exit.setFillColor(sf::Color::Red);
 
-	start.setPosition(size.x /2.f-(size.x/4.f), size.y *(1/5.f));
-	exit.setPosition(size.x / 2.f-(size.x/4.f), size.y * (2/5.f));
+	start.setPosition(GetSize().x /2.f-(GetSize().x/4.f), GetSize().y *(1/5.f));
+	exit.setPosition(GetSize().x / 2.f-(GetSize().x/4.f), GetSize().y * (2/5.f));
+
+}
+void Menu::Draw(sf::RenderWindow& window)
+{
 	window.clear();
 	window.draw(start);
 	window.draw(exit);

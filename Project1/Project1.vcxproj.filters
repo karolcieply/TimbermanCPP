@@ -30,10 +30,35 @@
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\tree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\treeleft.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\treeright.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\playerright.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\playerleft.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\font.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>
