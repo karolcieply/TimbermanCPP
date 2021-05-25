@@ -22,7 +22,7 @@ Game::Game() {
  }
 void Game::Draw(sf::RenderWindow& window)
 {
-	window.clear();
+	//window.clear();
 	for(auto& t : treeArray){
 		t.Draw(window);
 	}
@@ -32,10 +32,10 @@ void Game::Draw(sf::RenderWindow& window)
 	text.setString(std::to_string(score));
 
 	window.draw(text);
-	window.display();
+	//window.display();
 }
 unsigned int Game::GameFrame(sf::Keyboard::Key pressedKey) {
-	if (pressedKey != 72 && pressedKey != 71) return 1;
+	if (pressedKey != 72 && pressedKey != 71) return 0;
 	if(pressedKey==sf::Keyboard::Key::Right)
 	{
 		playerObj.setRight(true);
@@ -44,14 +44,13 @@ unsigned int Game::GameFrame(sf::Keyboard::Key pressedKey) {
 	{
 		playerObj.setRight(false);
 	}
-		for (int i = 0; i < 6; i++)
-		{
-			treeArray[i].MoveDown(1);
-		}
-		std::cout << score;
-		if (checkColission(playerObj, treeArray[(score+1) % 6]))return score;
-		treeArray[score % 6].MoveDown(-6);
-		treeArray[score % 6].RollBranch();
-		score++;
-		return 0;
+	for (int i = 0; i < 6; i++)
+	{
+		treeArray[i].MoveDown(1);
+	}
+	if (checkColission(playerObj, treeArray[(score+1) % 6]))return score;
+	treeArray[score % 6].MoveDown(-6);
+	treeArray[score % 6].RollBranch();
+	score++;
+	return 0;
 }

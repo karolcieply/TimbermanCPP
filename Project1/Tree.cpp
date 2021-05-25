@@ -3,8 +3,7 @@
 std::default_random_engine generator;
 std::uniform_int_distribution<int> distribution(0,30);
 bool Tree::LoadTextures(){
-	//if (!treeTexture.loadFromFile("./resources/tree.png")|| !treeTextureLeft.loadFromFile("./resources/treeleft.png")||!treeTextureRight.loadFromFile("./resources/treeright.png"))return false;
-	treeTexture.loadFromFile("./resources/tree.png"); treeTextureLeft.loadFromFile("./resources/treeleft.png"); treeTextureRight.loadFromFile("./resources/treeright.png");
+	if (!treeTexture.loadFromFile("./resources/tree.png")|| !treeTextureLeft.loadFromFile("./resources/treeleft.png")||!treeTextureRight.loadFromFile("./resources/treeright.png"))return false;
 	return true;
 }
 
@@ -12,7 +11,6 @@ Tree::Tree(int branchPosition):Object()
 {
 	SetSize(sf::Vector2f(3*windowWidth/5.f,windowHeight/7.f));
 	SetPosition(sf::Vector2f((windowWidth / 2.f)-GetSize().x/2.f, 0));
-	//SetSize(sf::Vector2f(10,GetSize().y));
 	this->branchPosition = branchPosition;
 }
 void Tree::MoveDown(int multiplier) {
@@ -30,7 +28,6 @@ void Tree::Draw(sf::RenderWindow& window)
 	if (branchPosition == 2)
 		log.setTexture(&treeTextureRight);
 	window.draw(log);
-	//window.display();
 }
 void Tree::RollBranch() {
 	int tmp = distribution(generator);

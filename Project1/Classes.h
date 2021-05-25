@@ -9,6 +9,7 @@ private:
 	sf::Vector2f position;
 	sf::Vector2f size;
 public:
+	virtual ~Object()=default;
 	//gettery i settery
 	void SetSize(sf::Vector2f size) { this->size = size; };
 	sf::Vector2f GetSize() { return size; };
@@ -20,13 +21,16 @@ public:
 };
 class Menu :public Object{
 	private:
+		sf::Texture startTexture;
+		sf::Texture exitTexture;
         sf::Font font;
 		//przyciski menu
 		sf::RectangleShape start;
 		sf::RectangleShape exit;
 	public:
+		bool LoadTextures();
 		Menu(sf::Vector2f size);
-		~Menu() = default;
+		virtual ~Menu() = default;
 		//rysowanie menu 
 		void Draw(sf::RenderWindow& window);
 		//sprawdzanie czy i który przycisk kliknięty 
@@ -34,13 +38,16 @@ class Menu :public Object{
 };
 class Player : public Object {
 	private:
-		sf::Texture textureLeft;
-		sf::Texture textureRight;
+		sf::Clock clock;
+		sf::Texture texture;
+		sf::Texture textureIdle;
+		sf::RectangleShape playerShape;
+		//sf::Texture textureRight;
 		unsigned int score{};
-		bool isGame{},isRight=1;
+		bool isGame{},isRight=0;
 	public:
 		Player();
-		~Player() = default;
+		virtual ~Player() = default;
 		//rysowanie gracza
 		void Draw(sf::RenderWindow& window);
 		//ustawianie pozycji gracza
@@ -61,7 +68,7 @@ class Tree: public Object{
 	public:
 		Tree() {};
 		Tree(int branchPosition);
-		~Tree() = default;
+		virtual ~Tree() = default;
 		//funkcja zaprzyjaźniona z graczem sprawdzająca czy gałąź dotyka gracza
 		friend bool checkColission(Player p, Tree t);
 		//przesuwanie galezi w dol na ekrani
@@ -86,9 +93,11 @@ class Game
 	public:
 		void Draw(sf::RenderWindow& window);
 		Game();
+		virtual ~Game() { std::cout << this->score; };
 		//funkcja bedzie zwracala ilosc punktow
 		//funkcja wywolywana przy kazdej kluczowej klatce gry
 		unsigned int GameFrame(sf::Keyboard::Key);
 		bool CheckTextures();
+		unsigned int GetScore() { return this->score; };
 
 };

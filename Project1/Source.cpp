@@ -7,14 +7,14 @@
 #include "Classes.h"
 int main()
 {
-
 	//deklaracja kluczowych zmiennych
 	static unsigned short int windowWidth{ 540 }, windowHeight{ 960 }, frameLimit{ 60 };
 	//deklaracja stanow gry
 	enum STATES {
-		MENU, GAME
+		MENU, GAME, GAMEOVER
 	};
 	char GAME_STATE = STATES::MENU;
+	unsigned int score{};
 
 	//tworzenie okna 
 	sf::RenderWindow window{ sf::VideoMode(windowWidth,windowHeight),"\"Timberman\"" };
@@ -22,20 +22,30 @@ int main()
 	window.setKeyRepeatEnabled(false);
 	//tworzenie kluczowych obiektow 
 	Menu menu(sf::Vector2f(windowWidth, windowHeight));
-	Game gameObj;
-
+	Game* gameObj{};
+	sf::Sprite background;
+	sf::Texture backgroundTextutre;
+	backgroundTextutre.loadFromFile("./resources/tlo.png");
+	background.setTexture(backgroundTextutre);
+	window.draw(background);
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
+		}
 			switch (GAME_STATE) {
 			case MENU:
+			{
+				window.clear();
+				window.draw(background);
 				menu.Draw(window);
+				window.display();
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					switch (menu.OnClick(sf::Mouse::getPosition(window))) {
 					case 1: {
+						gameObj = new Game();
 						GAME_STATE = STATES::GAME;
 						break;
 					}
@@ -45,22 +55,37 @@ int main()
 					}
 				}
 				break;
+			}
 			case GAME:
-				gameObj.Draw(window);
-				if (event.type == sf::Event::KeyPressed) {
-					if(gameObj.GameFrame(event.key.code) != 0){
+			{
+				window.clear();
+				window.draw(background);
+				gameObj->Draw(window);
+				window.display();
+				while (window.pollEvent(event)) {
+					if (event.type == sf::Event::Closed) {
 						window.close();
-						std::cout << "przegrales";
-						return 0;
 					}
-					if (event.key.code == sf::Keyboard::Escape) {
-						GAME_STATE = STATES::MENU;
+					if (event.type == sf::Event::KeyPressed) {
+						if (gameObj->GameFrame(event.key.code) != 0) {
+							score = gameObj->GetScore();
+							delete gameObj;
+							GAME_STATE = STATES::MENU;
+						}
+						if (event.key.code == sf::Keyboard::Escape) {
+							score = gameObj->GetScore();
+							delete gameObj;
+							GAME_STATE = STATES::MENU;
+						}
+						break;
 					}
-			default:
-				break;
 				}
 			}
+			case GAMEOVER: {
+				//std::cout << "You lost, score=:" << score;
+				break;
+			}
+			}
 		}
-	}
 	return 0;
-}
+	}
