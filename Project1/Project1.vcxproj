@@ -147,15 +147,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\GameOver.cpp" />
+    <ClCompile Include="Source\HighScores.cpp" />
+    <ClCompile Include="Source\Menu.cpp" />
+    <ClCompile Include="Source\Object.cpp" />
+    <ClCompile Include="Source\Pause.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\ResourcesManager.cpp" />
+    <ClCompile Include="Source\Rules.cpp" />
+    <ClCompile Include="Source\Shop.cpp" />
+    <ClCompile Include="Source\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes.h" />
+    <ClInclude Include="Source\Classes.h" />
+    <ClInclude Include="Source\Definitions.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\playerleft.png" />

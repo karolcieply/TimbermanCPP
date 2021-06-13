@@ -2,11 +2,6 @@
 #include <random>
 std::default_random_engine generator;
 std::uniform_int_distribution<int> distribution(0,30);
-bool Tree::LoadTextures(){
-	if (!treeTexture.loadFromFile("./resources/tree.png")|| !treeTextureLeft.loadFromFile("./resources/treeleft.png")||!treeTextureRight.loadFromFile("./resources/treeright.png"))return false;
-	return true;
-}
-
 Tree::Tree(int branchPosition):Object()
 {
 	SetSize(sf::Vector2f(3*windowWidth/5.f,windowHeight/7.f));
@@ -20,13 +15,12 @@ void Tree::Draw(sf::RenderWindow& window)
 {
 	log = sf::RectangleShape(GetSize());
 	log.setPosition(GetPosition());
-	log.setTexture(&treeTexture);
 	if (branchPosition == 0)
-		log.setTexture(&treeTextureLeft);
+		log.setTexture(&resManager.GetTexture("TreeLeft"));
 	if (branchPosition == 1)
-		log.setTexture(&treeTexture);
+		log.setTexture(&resManager.GetTexture("Tree"));
 	if (branchPosition == 2)
-		log.setTexture(&treeTextureRight);
+		log.setTexture(&resManager.GetTexture("TreeRight"));
 	window.draw(log);
 }
 void Tree::RollBranch() {
