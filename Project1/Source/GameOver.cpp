@@ -33,6 +33,12 @@ GameOver::GameOver(unsigned int score)
 		bestScore.setFont(resManager.GetFont("font"));
 		bestScore.setPosition(sf::Vector2f(windowWidth/3,windowHeight/3+windowHeight/7));
 		bestScore.setFillColor(sf::Color::Black);
+		if (score < resManager.GetTopScore())
+			gameEndingSoundBuffer.loadFromFile(GAME_OVER_SOUND);
+		else
+			gameEndingSoundBuffer.loadFromFile(NEW_BEST_SCORE_SOUND);
+		gameEndingSound.setBuffer(gameEndingSoundBuffer);
+		gameEndingSound.play();
 }
 void GameOver::Draw(sf::RenderWindow& window)
 {

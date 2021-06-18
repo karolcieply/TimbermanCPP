@@ -20,7 +20,6 @@ void HighScores::Draw(sf::RenderWindow& window)
 	window.draw(highScoreScreen);
 	window.draw(backToMenu);
 	for (int i = 0; i<10; i++) {
-		std::cout << resManager.GetWholeScore(i)<<"\n";
 		hsText.setString(resManager.GetWholeScore(i));
 		hsText.setPosition(windowWidth/2.f-windowWidth/4.f,windowHeight/5.f+i*windowHeight/20.f);
 		window.draw(hsText);

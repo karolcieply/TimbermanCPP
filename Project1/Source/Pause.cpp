@@ -6,11 +6,9 @@ Pause::Pause():Object(sf::Vector2f(windowWidth,windowHeight),sf::Vector2f(0,0)){
 		pauseScreen.setPosition(sf::Vector2f(windowWidth/2.F , windowHeight/2.F));
 		pauseScreen.setTexture(&resManager.GetTexture("highScoreBackground"));
 		backToMenu.setSize(sf::Vector2f(windowWidth/ 2.f, windowHeight / 10.f));
-		//backMenu.setOrigin(sf::Vector2f(backMenu.getSize().x/2.f, backMenu.getSize().y/2.f));
 		backToMenu.setPosition(sf::Vector2f(windowWidth /2.f-(windowWidth/4.f), windowHeight*(4.5/6.f)));
 		backToMenu.setTexture(&resManager.GetTexture("menuButton"));
 		resume.setSize(sf::Vector2f(windowWidth/ 2.f, windowHeight / 10.f));
-		//playAgain.setOrigin(sf::Vector2f(playAgain.getSize().x/2.f, playAgain.getSize().y/2.f));
 		resume.setPosition(sf::Vector2f(windowWidth /2.f-(windowWidth/4.f), windowHeight*(3.5/6.f)));
 		resume.setTexture(&resManager.GetTexture("playAgainButton"));
 

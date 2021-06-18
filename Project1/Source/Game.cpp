@@ -5,7 +5,6 @@
 	 return false;
 }
 Game::Game() {
-	testSound.openFromFile(TEST);
 	for (int i = 0; i < 6; i++) {
 		*(treeArray+i) = new Tree(1);
 		treeArray[i]->MoveDown(5-i);
@@ -16,6 +15,8 @@ Game::Game() {
 	text.setFont(resManager.GetFont("font"));
 	timerBorder.setTexture(resManager.GetTexture("timerBorder"));
 	timerBorder.setPosition(timerRectangle.getPosition()-sf::Vector2f(10,10));
+	chopSoundBuffer.loadFromFile(TREE_CHOP_SOUND);
+	chopSound.setBuffer(chopSoundBuffer);
 }
 void Game::Draw(sf::RenderWindow& window)
 {
@@ -44,7 +45,7 @@ void Game::GameFrame(sf::Keyboard::Key pressedKey) {
 		return;
 	}	
 	if (pressedKey == 72 || pressedKey == 71) {
-		testSound.play();
+		chopSound.play();
 		if (isPaused) {
 			timePassed.restart();
 			isPaused = false;
@@ -65,8 +66,7 @@ void Game::GameFrame(sf::Keyboard::Key pressedKey) {
 		treeArray[score % 6]->MoveDown(-6);
 		treeArray[score % 6]->RollBranch();
 		score++;
-		maxTime = sf::seconds(maxTime.asSeconds()+ 2.f/score);
-		//std::cout << maxTime.asMilliseconds() << "\n";
+		maxTime = sf::seconds(maxTime.asSeconds()+ 2/sqrt(score));
 		return;
 	}
 	return;

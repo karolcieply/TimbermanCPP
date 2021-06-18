@@ -3,10 +3,9 @@
 #include "Definitions.h"
 #include <windows.h>
 #include <winbase.h>
-#include<fstream>
+#include <math.h>
 #include <SFML/Audio.hpp>
-//static unsigned short int windowWidth{ 540 }, windowHeight{ 960 };
-//to trzeba ogarnąć bo nie wiadomo czemu nie działają globalne?
+#include<fstream>
 class Tree;
 //klasa bazowa na ktorej bazuja inne klasy
 class Object {
@@ -43,11 +42,11 @@ class Menu :public Object{
 };
 class Player : public Object {
 	private:
+		//deklaracja zegara, prostokąta z graczem,wyniku i zmiennej przechowującej pozycję gracza
 		sf::Clock clock;
 		sf::RectangleShape playerShape;
-		//sf::Texture textureRight;
 		unsigned int score{};
-		bool isGame{},isRight=0;
+		bool isRight=0;
 	public:
 		Player();
 		virtual ~Player() = default;
@@ -57,7 +56,6 @@ class Player : public Object {
 		void setRight(bool isRight);
 		//funkcja zaprzyjaźniona z drzewem sprawdzająca czy gracz dotknął gałęzi 
 		friend bool checkColission(Player* p, Tree* t);
-		bool LoadTexture();
 	
 };
 class Tree: public Object{
@@ -67,7 +65,7 @@ class Tree: public Object{
 	public:
 		Tree() {};
 		Tree(int branchPosition);
-		virtual ~Tree() { std::cout << "dziala"; };
+		virtual ~Tree() {};
 		//funkcja zaprzyjaźniona z graczem sprawdzająca czy gałąź dotyka gracza
 		friend bool checkColission(Player* p, Tree* t);
 		//przesuwanie galezi w dol na ekrani
@@ -83,6 +81,8 @@ private:
 	unsigned int score{};
 	//time;
 	//wywolane obiekty porzebne do gry
+	sf::Sound chopSound;
+	sf::SoundBuffer chopSoundBuffer;
 	Tree* treeArray[6]{};
 	Player playerObj{};
 	sf::Text text{};
@@ -90,8 +90,7 @@ private:
 	sf::RectangleShape timerRectangle{};
 	sf::Sprite timerBorder{};
 	bool isPaused=true;
-	sf::Time maxTime =sf::microseconds(15000000);
-	sf::Music testSound;
+	sf::Time maxTime = sf::milliseconds(10000);
 public:
 	void Draw(sf::RenderWindow& window);
 	Game();
@@ -99,7 +98,7 @@ public:
 	//funkcja bedzie zwracala ilosc punktow
 	//funkcja wywolywana przy kazdej kluczowej klatce gry
 	void GameFrame(sf::Keyboard::Key);
-	bool CheckTextures();
+
 	unsigned int GetScore() { return this->score; };
 	bool IsGameOver();
 };
@@ -113,6 +112,8 @@ public:
 
 	void LoadFont(std::string name, std::string file);
 	sf::Font& GetFont(std::string name);
+	//void LoadSound(std::string name, std::string file);
+	//sf::SoundBuffer GetSound(std::string name);
 	void UpdateArray(unsigned int );
 	void LoadTopScores();
 	void SaveTopScores();
@@ -120,10 +121,10 @@ public:
 	unsigned int GetTopScore();
 	std::string GetWholeScore(int which);
 
-
 private:
 	std::map<std::string, sf::Texture> textures;
 	std::map<std::string, sf::Font> fonts;
+	//std::map<std::string, sf::SoundBuffer> sounds;
 	SYSTEMTIME st;
 	std::string topScores[30];
 	std::ifstream inputFile;
@@ -138,7 +139,6 @@ class Pause :public Object{
 		sf::RectangleShape backToMenu;
 		sf::RectangleShape pauseScreen{};
 	public:
-		bool LoadTextures();
 		Pause();
 		virtual ~Pause() = default;
 		//rysowanie menu 
@@ -150,21 +150,29 @@ class GameOver
 {
 private:
 	sf::RectangleShape gameOverScreen{};
+	//zmienne tekstowe wyświetlane na ekranie
 	sf::Text endingScore{};
 	sf::Text bestScore{};
+	//zmienne przechowujace wynik
 	std::string scoreString{};
 	std::string bestScoreString{};
+	//przyciski
 	sf::RectangleShape backMenu{};
 	sf::RectangleShape playAgain{};
+	sf::Sound gameEndingSound;
+	sf::SoundBuffer gameEndingSoundBuffer;
 public:
 	GameOver(unsigned int score);
 	virtual ~GameOver() = default;
+	//funkcja wyświetlająca na ekran
 	void Draw(sf::RenderWindow& window);
+	//sprawdzanie czy i który przycisk kliknięty 
 	int OnClick(sf::Vector2i);
 };
 class HighScores :public Object
 {
 	private:
+		//przycisk
 		sf::RectangleShape backToMenu{};
 		sf::RectangleShape highScoreScreen{};
 		sf::Text hsText{};
@@ -172,29 +180,38 @@ class HighScores :public Object
 	public:
 		HighScores();
 		virtual ~HighScores() = default;
+		//funkcja wyświetlająca na ekran
 		void Draw(sf::RenderWindow& window);
+		//sprawdzanie czy i który przycisk kliknięty 
 		int OnClick(sf::Vector2i);
 };
 class Rules :public Object
 {
 	private:
+		//przyciski
 		sf::RectangleShape backToMenu{};
 		sf::RectangleShape rulesScreen{};
 	public:
 		Rules();
 		virtual ~Rules() = default;
+		//funkcja wyświetlająca na ekran
 		void Draw(sf::RenderWindow& window);
+		//sprawdzanie czy i który przycisk kliknięty 
 		int OnClick(sf::Vector2i);
 };
 class Shop :public Object
 {
 	private:
 		short skinNumber{};
+		//przyciski
 		sf::RectangleShape backToMenu{};
 		sf::RectangleShape previous{};
 		sf::RectangleShape next{};
+
 		sf::RectangleShape shopScreen{};
+		//zegar potrzebny do animacji
 		sf::Clock clock{};
+
 		sf::RectangleShape chosenSkin{};
 		std::string skinPath{};
 		void changeSkin();
@@ -202,7 +219,9 @@ class Shop :public Object
 
 		Shop();
 		virtual ~Shop() = default;
+		//funkcja wyświetlająca na ekran
 		void Draw(sf::RenderWindow& window);
+		//sprawdzanie czy i który przycisk kliknięty 
 		int OnClick(sf::Vector2i);
 };
 

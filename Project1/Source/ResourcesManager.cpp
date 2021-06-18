@@ -29,6 +29,22 @@ sf::Font& ResourcesManager::GetFont(std::string name)
 {
 	return this->fonts.at(name);
 }
+/*void ResourcesManager::LoadSound(std::string name, std::string fileName)
+{
+	sf::SoundBuffer xd;
+
+	if (xd.loadFromFile(fileName))
+	{
+		this->sounds[name] = xd;
+	}
+}
+
+sf::SoundBuffer ResourcesManager::GetSound(std::string name)
+{
+	return this->sounds.at(name);
+}
+*/
+
 
 void ResourcesManager::SaveTopScores() {
 	outputFile.open(HIGH_SCORES_FILE);
@@ -57,10 +73,19 @@ std::string ResourcesManager::GetTime()
 void ResourcesManager::LoadTopScores()
 {
 	inputFile.open(HIGH_SCORES_FILE);
-	for (int i = 0; i < 20; i++) {
-		inputFile >> topScores[i];
+	if(!inputFile.is_open())
+	{
+		for (int i = 0; i < 20; i++) {
+			topScores[i]="0";
+		}
 	}
+	else
+	{
+		for (int i = 0; i < 20; i++) {
+			inputFile >> topScores[i];
+		}
 	inputFile.close();
+	}
 	return;
 }
 

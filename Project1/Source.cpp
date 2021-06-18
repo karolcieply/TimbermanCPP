@@ -9,32 +9,32 @@
 #include <winbase.h>
 #include "./Source/Definitions.h"
 #include "./Source/Classes.h"
-void LoadTextures() {
-	resManager.LoadFont("font", FONT_FILE);
-	resManager.LoadTexture("background", BACKGROUND_FILE);
-	resManager.LoadTexture("TimbermanIdle", TIMBERMAN_IDLE_SPRITE);
-	resManager.LoadTexture("TimbermanChop", TIMBERMAN_CHOP_SPRITE);
-	resManager.LoadTexture("TreeLeft", TREE_LEFT_TEXTURE);
-	resManager.LoadTexture("Tree", TREE_NEUTRAL_TEXTURE);
-	resManager.LoadTexture("TreeRight", TREE_RIGHT_TEXTURE);
-	resManager.LoadTexture("start", START_TEXTURE);
-	resManager.LoadTexture("exit", EXIT_TEXTURE);
-	resManager.LoadTexture("timerBorder", TIMER_BORDER_TEXTURE);
-	resManager.LoadTexture("GameOver", GAME_OVER_TEXTURE);
-	resManager.LoadTexture("highScore", HIGH_SCORES_BUTTON);
-	resManager.LoadTexture("highScoreBackground", HIGH_SCORES_BACKGROUND);
-	resManager.LoadTexture("menuButton", MAIN_MENU_BUTTON);
-	resManager.LoadTexture("playAgainButton", PLAY_AGAIN_BUTTON);
-	resManager.LoadTexture("rulesButton", RULES_BUTTON);
-	resManager.LoadTexture("rulesBackground", RULES_BACKGROUND);
-	resManager.LoadTexture("smallExitButton", SMALL_EXIT_BUTTON);
-	resManager.LoadTexture("shopButton", SHOP_BUTTON);
-	resManager.LoadTexture("arrowButton", ARROW_BUTTON);
+//wczytanie wszystkich zasobów
+void LoadResources() {
+		resManager.LoadTopScores();
+		resManager.LoadFont("font", FONT_FILE);
+		resManager.LoadTexture("background", BACKGROUND_FILE);
+		resManager.LoadTexture("TimbermanIdle", TIMBERMAN_IDLE_SPRITE);
+		resManager.LoadTexture("TimbermanChop", TIMBERMAN_CHOP_SPRITE);
+		resManager.LoadTexture("TreeLeft", TREE_LEFT_TEXTURE);
+		resManager.LoadTexture("Tree", TREE_NEUTRAL_TEXTURE);
+		resManager.LoadTexture("TreeRight", TREE_RIGHT_TEXTURE);
+		resManager.LoadTexture("start", START_TEXTURE);
+		resManager.LoadTexture("exit", EXIT_TEXTURE);
+		resManager.LoadTexture("timerBorder", TIMER_BORDER_TEXTURE);
+		resManager.LoadTexture("GameOver", GAME_OVER_TEXTURE);
+		resManager.LoadTexture("highScore", HIGH_SCORES_BUTTON);
+		resManager.LoadTexture("highScoreBackground", HIGH_SCORES_BACKGROUND);
+		resManager.LoadTexture("menuButton", MAIN_MENU_BUTTON);
+		resManager.LoadTexture("playAgainButton", PLAY_AGAIN_BUTTON);
+		resManager.LoadTexture("rulesButton", RULES_BUTTON);
+		resManager.LoadTexture("rulesBackground", RULES_BACKGROUND);
+		resManager.LoadTexture("smallExitButton", SMALL_EXIT_BUTTON);
+		resManager.LoadTexture("shopButton", SHOP_BUTTON);
+		resManager.LoadTexture("arrowButton", ARROW_BUTTON);
 }
 int main()
 {
-	resManager.LoadTopScores();
-	//deklaracja stanow gry
 	enum STATES {
 		MENU, GAME, GAMEOVER, PAUSE, HIGHSCORES, RULES, SHOP
 	};
@@ -44,28 +44,32 @@ int main()
 	sf::RenderWindow window{ sf::VideoMode(windowWidth,windowHeight),"\"Timberman\"" };
 	window.setFramerateLimit(frameLimit);
 	window.setKeyRepeatEnabled(false);
-	//tworzenie kluczowych obiektow 
-
+	//tworzenie wskaŸników kluczowych obiektow 
 	Game* gameObj{};
 	Menu* menuObj{};
 	Pause* pauseObj{};
 	GameOver* gameOverObj{};
 	HighScores* highScoresObj{};
 	Shop* shopObj{};
-
 	Rules* rulesObj{};
+	//wywo³anie funkcji wczytuj¹cej zasoby i stworzenie t³a
+	LoadResources();
 	sf::Sprite background;
-	LoadTextures();
 	background.setTexture(resManager.GetTexture("background"));
 	window.draw(background);
+	//wczytywanie dŸwiêku
+	sf::Sound buttonClick;
+	static sf::SoundBuffer buttonSoundBuffer;
+	buttonSoundBuffer.loadFromFile(BUTTON_CLICK_SOUND);
+	buttonClick.setBuffer(buttonSoundBuffer);
+	sf::Music backgroundMusic;
+	backgroundMusic.openFromFile(BACKGROUND_MUSIC);
+	backgroundMusic.setLoop(true);
+	backgroundMusic.setVolume(10.f);
+	backgroundMusic.play();
 
 	while (window.isOpen()) {
 		sf::Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
-				window.close();
-			}
-		}
 		switch (GAME_STATE) {
 		case MENU:
 		{
@@ -82,28 +86,34 @@ int main()
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					switch (menuObj->OnClick(sf::Mouse::getPosition(window))) {
 					case 1: {
+						buttonClick.play();
 						delete menuObj;
 						menuObj = NULL;
 						GAME_STATE = STATES::GAME;
 						break;
 					}
 					case 2: {
+						buttonClick.play();
+						Sleep(100);
 						window.close();
 						break;
 					}
 					case 3: {
+						buttonClick.play();
 						delete menuObj;
 						menuObj = NULL;
 						GAME_STATE = STATES::HIGHSCORES;
 						break;
 					}
 					case 4: {
+						buttonClick.play();
 						delete menuObj;
 						menuObj = NULL;
 						GAME_STATE = STATES::RULES;
 						break;
 					}
 					case 5: {
+						buttonClick.play();
 						delete menuObj;
 						menuObj = NULL;
 						GAME_STATE = STATES::SHOP;
@@ -162,12 +172,14 @@ int main()
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					switch (gameOverObj->OnClick(sf::Mouse::getPosition(window))) {
 					case 1: {
+						buttonClick.play();
 						delete gameOverObj;
 						gameOverObj = NULL;
 						GAME_STATE = STATES::GAME;
 						break;
 					}
 					case 2: {
+						buttonClick.play();
 						delete gameOverObj;
 						gameOverObj = NULL;
 						GAME_STATE = STATES::MENU;
@@ -195,6 +207,7 @@ int main()
 					switch (pauseObj->OnClick(sf::Mouse::getPosition(window))) {
 					case 1:
 					{
+						buttonClick.play();
 						delete pauseObj;
 						pauseObj = NULL;
 						GAME_STATE = STATES::GAME;
@@ -203,6 +216,7 @@ int main()
 					}
 					case 2:
 					{
+						buttonClick.play();
 						delete pauseObj;
 						pauseObj = NULL;
 						delete gameObj;
@@ -232,6 +246,7 @@ int main()
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					if (highScoresObj->OnClick(sf::Mouse::getPosition(window)) == 1)
 					{
+						buttonClick.play();
 						delete highScoresObj;
 						highScoresObj = NULL;
 						//delete gameObj;
@@ -259,6 +274,7 @@ int main()
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					if (rulesObj->OnClick(sf::Mouse::getPosition(window)) == 1)
 					{
+						buttonClick.play();
 						delete rulesObj;
 						rulesObj = NULL;
 						GAME_STATE = STATES::MENU;
@@ -285,6 +301,7 @@ int main()
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					if (shopObj->OnClick(sf::Mouse::getPosition(window)) == 1)
 					{
+						buttonClick.play();
 						delete shopObj;
 						shopObj = NULL;
 						GAME_STATE = STATES::MENU;
