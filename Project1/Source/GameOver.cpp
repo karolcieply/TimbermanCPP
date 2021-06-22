@@ -9,15 +9,12 @@ GameOver::GameOver(unsigned int score)
 		gameOverScreen.setPosition(sf::Vector2f(windowWidth/2.F , windowHeight/2.F));
 		gameOverScreen.setTexture(&resManager.GetTexture("GameOver"));
 		backMenu.setSize(sf::Vector2f(windowWidth/ 2.f, windowHeight / 10.f));
-		//backMenu.setOrigin(sf::Vector2f(backMenu.getSize().x/2.f, backMenu.getSize().y/2.f));
 		backMenu.setPosition(sf::Vector2f(windowWidth /2.f-(windowWidth/4.f), windowHeight*(4.5/6.f)));
 		backMenu.setTexture(&resManager.GetTexture("menuButton"));
 		playAgain.setSize(sf::Vector2f(windowWidth/ 2.f, windowHeight / 10.f));
-		//playAgain.setOrigin(sf::Vector2f(playAgain.getSize().x/2.f, playAgain.getSize().y/2.f));
 		playAgain.setPosition(sf::Vector2f(windowWidth /2.f-(windowWidth/4.f), windowHeight*(3.5/6.f)));
 		playAgain.setTexture(&resManager.GetTexture("playAgainButton"));
 
-		//font.loadFromFile(FONT_FILE);
 
 		scoreString = "SCORE ";
 		scoreString +=std::to_string(score);
