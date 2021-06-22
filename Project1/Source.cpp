@@ -1,12 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <iostream>
-#include <ctime>
-#include <fstream>
-#include <stdlib.h>
-#include <string>
-#include <windows.h>
-#include <winbase.h>
 #include "./Source/Definitions.h"
 #include "./Source/Classes.h"
 //wczytanie wszystkich zasobów
@@ -32,6 +25,8 @@ void LoadResources() {
 		resManager.LoadTexture("smallExitButton", SMALL_EXIT_BUTTON);
 		resManager.LoadTexture("shopButton", SHOP_BUTTON);
 		resManager.LoadTexture("arrowButton", ARROW_BUTTON);
+		resManager.LoadTexture("pauseBackground",PAUSE_BACKGROUND);
+		resManager.LoadTexture("continueButton",CONTINUE_BUTTON);
 }
 int main()
 {
