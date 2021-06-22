@@ -4,16 +4,13 @@ Pause::Pause():Object(sf::Vector2f(windowWidth,windowHeight),sf::Vector2f(0,0)){
 		pauseScreen.setFillColor(sf::Color::White);
 		pauseScreen.setOrigin(sf::Vector2f(pauseScreen.getSize().x/2.f, pauseScreen.getSize().y/2.f));
 		pauseScreen.setPosition(sf::Vector2f(windowWidth/2.F , windowHeight/2.F));
-		pauseScreen.setTexture(&resManager.GetTexture("highScoreBackground"));
+		pauseScreen.setTexture(&resManager.GetTexture("pauseBackground"));
 		backToMenu.setSize(sf::Vector2f(windowWidth/ 2.f, windowHeight / 10.f));
 		backToMenu.setPosition(sf::Vector2f(windowWidth /2.f-(windowWidth/4.f), windowHeight*(4.5/6.f)));
 		backToMenu.setTexture(&resManager.GetTexture("menuButton"));
 		resume.setSize(sf::Vector2f(windowWidth/ 2.f, windowHeight / 10.f));
 		resume.setPosition(sf::Vector2f(windowWidth /2.f-(windowWidth/4.f), windowHeight*(3.5/6.f)));
-		resume.setTexture(&resManager.GetTexture("playAgainButton"));
-
-		//font.loadFromFile(FONT_FILE);
-
+		resume.setTexture(&resManager.GetTexture("continueButton"));
 }
 void Pause::Draw(sf::RenderWindow& window)
 {

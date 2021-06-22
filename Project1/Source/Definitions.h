@@ -30,3 +30,5 @@
 #define BUTTON_CLICK_SOUND "./resources/buttonClickSound.wav"
 #define NEW_BEST_SCORE_SOUND "./resources/newBestScoreSound.wav"
 #define GAME_OVER_SOUND "./resources/gameOverSound.wav"
+#define PAUSE_BACKGROUND "./resources/pauseBackground.png"
+#define CONTINUE_BUTTON "./resources/continue.png"
